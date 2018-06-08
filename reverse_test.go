@@ -4,17 +4,20 @@ import "testing"
 
 func TestReverse(t *testing.T) {
 	cases := &[]struct {
-		in, want string
+		name, in, want string
 	}{
-		{"Hello, world", "dlrow ,olleH"},
-		{"Hello, 世界", "界世 ,olleH"},
-		{"~!@#$%^&*()_+", "+_)(*&^%$#@!~"},
-		{"", ""},
+		{"normal", "Hello, world", "dlrow ,olleH"},
+		{"normal and chinese", "Hello, 世界", "界世 ,olleH"},
+		{"numbers", "1234567890", "0987654321"},
+		{"symbols", "~!@#$%^&*()_+", "+_)(*&^%$#@!~"},
+		{"empty", "", ""},
 	}
 	for _, c := range *cases {
-		got := Reverse(c.in)
-		if got != c.want {
-			t.Errorf("Reverse(%q) == %q, want %q", c.in, got, c.want)
-		}
+		t.Run(c.name, func(t *testing.T) {
+			got := Reverse(c.in)
+			if got != c.want {
+				t.Fatalf("[Case %v] Reverse(%q) == %q, want %q", c.name, c.in, got, c.want)
+			}
+		})
 	}
 }
